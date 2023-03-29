@@ -1,0 +1,7 @@
+{
+    "name": "test/library",
+    "type": "pact-plugin",
+    "require": {
+        "tienvx/pact-plugin-install": "@dev"
+    }
+}

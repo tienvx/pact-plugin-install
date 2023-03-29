@@ -1,0 +1,29 @@
+{
+    "name": "tienvx/pact-plugin-install",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "require": {
+        "composer-plugin-api": "^2.0",
+        "php": "^8.0",
+        "symfony/filesystem": "^4.4 | ^5.4 | ^6.0",
+        "symfony/finder": "^4.4 | ^5.4 | ^6.0"
+    },
+    "require-dev": {
+        "composer/composer": "^2.2",
+        "phpunit/phpunit": "^9.5.10",
+        "php-vfs/php-vfs": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tienvx\\PactPluginInstall\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tienvx\\PactPluginInstall\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "class": "Tienvx\\PactPluginInstall\\Plugin"
+    }
+}

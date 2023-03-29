@@ -1,0 +1,58 @@
+name: main
+
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  php-cs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout repository
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: phpstan, php-cs-fixer:3
+
+      - name: Run PHP CS Fixer
+        run: php-cs-fixer fix --diff --dry-run
+
+      - name: Run PHPStan
+        run: phpstan
+  phpunit:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        php: [8.0, 8.1, 8.2]
+        os: [ubuntu-latest]
+        dependencies: [ 'lowest', 'locked' ]
+        include:
+          - operating-system: windows-latest
+            php-versions: '8.0'
+            dependency-versions: 'locked'
+          - operating-system: macos-latest
+            php-versions: '8.0'
+            dependency-versions: 'locked'
+    name: PHP ${{ matrix.php }} - OS ${{ matrix.os }} - Dependencies ${{ matrix.dependencies }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+            php-version: ${{ matrix.php }}
+            coverage: pcov
+      - uses: ramsey/composer-install@v2
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+      - name: Run tests
+        run: ./vendor/bin/phpunit
+      - name: Upload coverage results to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          composer global require php-coveralls/php-coveralls
+          php-coveralls --coverage_clover=clover.xml -v
+        if: ${{ github.event_name == 'push' && matrix.os == 'ubuntu-latest' && matrix.php == '8.2' && matrix.dependencies == 'locked' }}

@@ -1,0 +1,8 @@
+{
+  "manifestVersion": 1,
+  "pluginInterfaceVersion": 1,
+  "name": "xml",
+  "version": "0.3.5",
+  "executableType": "exec",
+  "entryPoint": "hello.ruby"
+}
