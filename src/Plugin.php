@@ -39,9 +39,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
     public function installPackages(Event $event): void
     {
-        $rootPackage = $this->composer->getPackage();
-        $this->install($rootPackage);
-
         $localRepo = $this->composer->getRepositoryManager()->getLocalRepository();
         foreach ($localRepo->getCanonicalPackages() as $package) {
             $this->install($package);

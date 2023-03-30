@@ -11,7 +11,6 @@ use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
-use Composer\Package\RootPackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
 use Composer\Repository\RepositoryInterface;
 use Composer\Repository\RepositoryManager;
@@ -82,15 +81,6 @@ class PluginTest extends TestCase
     public function testInstallPackages(?string $binDir, string $type, bool $symlinked): void
     {
         $this->createFiles();
-        $rootPackage = $this->createMock(RootPackageInterface::class);
-        $this->composer
-            ->expects($this->once())
-            ->method('getPackage')
-            ->willReturn($rootPackage);
-        $rootPackage
-            ->expects($this->once())
-            ->method('getType')
-            ->willReturn('project');
         $repositoryManager = $this->createMock(RepositoryManager::class);
         $this->composer
             ->expects($this->once())
